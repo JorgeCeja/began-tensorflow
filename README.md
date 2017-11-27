@@ -2,8 +2,8 @@
 
 ### Prerequisites
 
-- Jupyter notebook
 - Tensoflow 
+- Matplotlib
 - Numpy
 
 ## Getting Started
@@ -11,7 +11,7 @@
 1. `git clone ` + repo URL
 2. cd to repo
 3. `pip install -r requirement.txt` if packages are not yet installed
-4. `jupyter notebook ` + jupyter notebook selected
+4. Train model: `python train.py`
 
 ## Results
 
