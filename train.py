@@ -10,7 +10,8 @@ import os
 
 def train(model, epoch_count, batch_size, z_dim, star_learning_rate, beta1, beta2, get_batches, data_shape,
           image_mode):
-    input_real, input_z, lrate, k_t = model.model_inputs(*(data_shape[1:]), z_dim)
+    input_real, input_z, lrate, k_t = model.model_inputs(
+        *(data_shape[1:]), z_dim)
 
     d_loss, g_loss, d_real, d_fake = model.model_loss(
         input_real, input_z, data_shape[3], z_dim, k_t)
@@ -75,12 +76,13 @@ def train(model, epoch_count, batch_size, z_dim, star_learning_rate, beta1, beta
         # fig.savefig('convergence_measure.png')
         # plt.close(fig)
 
-        helper.save_plot([losses, helper.smooth(losses)], 'convergence_measure.png')
+        helper.save_plot([losses, helper.smooth(losses)],
+                         'convergence_measure.png')
 
 
 if __name__ == '__main__':
     batch_size = 16
-    z_dim = 64 # aka embedding
+    z_dim = 64  # aka embedding
     learning_rate = 0.0001
     beta1 = 0.5
     beta2 = 0.999
@@ -88,11 +90,14 @@ if __name__ == '__main__':
 
     data_dir = './data'
 
+    # Download dataset
+    helper.download_extract('celeba', data_dir)
+
     model = BEGAN()
 
     celeba_dataset = helper.Dataset('celeba', glob(
         os.path.join(data_dir, 'img_align_celeba/*.jpg')))
-        
+
     with tf.Graph().as_default():
         train(model, epochs, batch_size, z_dim, learning_rate, beta1, beta2, celeba_dataset.get_batches,
               celeba_dataset.shape, celeba_dataset.image_mode)

@@ -2,6 +2,7 @@
 
 ### Prerequisites
 
+- [CelebA Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) 
 - Tensoflow 
 - Matplotlib
 - Numpy
@@ -11,7 +12,7 @@
 1. `git clone ` + repo URL
 2. cd to repo
 3. `pip install -r requirement.txt` if packages are not yet installed
-4. Train model: `python train.py`
+4. Train model: `python train.py` downloads dataset if not present and trains the model
 
 ## Results
 
