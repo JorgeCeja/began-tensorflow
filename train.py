@@ -44,37 +44,34 @@ def train(model, epoch_count, batch_size, z_dim, star_learning_rate, beta1, beta
 
                 batch_z = np.random.uniform(-1, 1, size=(batch_size, z_dim))
 
-                _, D_real_curr = sess.run([d_opt, d_real], feed_dict={
+                _, d_real_curr = sess.run([d_opt, d_real], feed_dict={
                                           input_z: batch_z, input_real: batch_images, lrate: learning_rate, k_t: k_curr})
 
-                _, D_fake_curr = sess.run([g_opt, d_fake], feed_dict={
+                _, d_fake_curr = sess.run([g_opt, d_fake], feed_dict={
                                           input_z: batch_z, input_real: batch_images, lrate: learning_rate, k_t: k_curr})
 
-                k_curr = k_curr + lam * (gamma * D_real_curr - D_fake_curr)
+                k_curr = k_curr + lam * (gamma * d_real_curr - d_fake_curr)
 
+                # save convergence measure
                 if iter % 100 == 0:
-                    measure = D_real_curr + \
-                        np.abs(gamma * D_real_curr - D_fake_curr)
+                    measure = d_real_curr + \
+                        np.abs(gamma * d_real_curr - d_fake_curr)
                     losses.append(measure)
 
                     print("Epoch {}/{}...".format(epoch_i + 1, epoch_count),
                           'Convergence measure: {:.4}'.format(measure))
 
-                if iter % 100 == 0:
-                    # helper.show_generator_output(
-                    #     sess, model.generator, 4, input_z, batch_z, data_shape[3], image_mode, iter)
+                # save test and batch images
+                if iter % 700 == 0:
+                    helper.show_generator_output(
+                        sess, model.generator, input_z, batch_z, data_shape[3], image_mode, 'batch-' + str(iter))
 
                     helper.show_generator_output(
-                        sess, model.generator, input_z, test_z, data_shape[3], image_mode, iter)
+                        sess, model.generator, input_z, test_z, data_shape[3], image_mode, 'test-' + str(iter))
 
         print('Training steps: ', iter)
 
         losses = np.array(losses)
-        # fig = plt.figure()
-        # plt.plot(losses)
-        # plt.plot(helper.smooth(losses))
-        # fig.savefig('convergence_measure.png')
-        # plt.close(fig)
 
         helper.save_plot([losses, helper.smooth(losses)],
                          'convergence_measure.png')
@@ -86,7 +83,7 @@ if __name__ == '__main__':
     learning_rate = 0.0001
     beta1 = 0.5
     beta2 = 0.999
-    epochs = 1
+    epochs = 20
 
     data_dir = './data'
 
