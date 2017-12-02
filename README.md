@@ -16,7 +16,7 @@
 
 ## Results
 
-![result](images/example.jpg)
+![result](images/example.png)
 
 ## Todo
 
